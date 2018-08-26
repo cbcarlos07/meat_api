@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/cbcarlos07/meat_api#readme",
   "dependencies": {
-    "restify": "6.3.4"
+    "restify": "6.3.4",
+    "typescript": "^2.6.2"
   },
   "devDependencies": {
     "@types/restify": "5.0.6"
