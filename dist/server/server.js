@@ -2,9 +2,16 @@
 exports.__esModule = true;
 var restify = require("restify");
 var environment_1 = require("../common/environment");
+var mongoose = require("mongoose");
 var Server = /** @class */ (function () {
     function Server() {
     }
+    Server.prototype.initializeDb = function () {
+        mongoose.Promise = global.Promise;
+        return mongoose.connect(environment_1.environment.db.url, {
+            useMongoClient: true
+        });
+    };
     Server.prototype.initRoutes = function (routers) {
         var _this = this;
         return new Promise(function (resolve, reject) {
@@ -31,7 +38,9 @@ var Server = /** @class */ (function () {
     Server.prototype.bootstrap = function (routers) {
         var _this = this;
         if (routers === void 0) { routers = []; }
-        return this.initRoutes(routers).then(function () { return _this; });
+        return this.initializeDb().then(function () {
+            return _this.initRoutes(routers).then(function () { return _this; });
+        });
     };
     return Server;
 }());
