@@ -1,25 +1,16 @@
 {
-  "name": "meat_api",
+  "name": "meat-api",
   "version": "1.0.0",
-  "description": "Api de restaurantes",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cbcarlos07/meat_api.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/cbcarlos07/meat_api/issues"
-  },
-  "homepage": "https://github.com/cbcarlos07/meat_api#readme",
   "dependencies": {
-    "restify": "6.3.4",
-    "typescript": "^2.6.2"
+    "restify": "6.3.4"
   },
   "devDependencies": {
     "@types/restify": "5.0.6"
