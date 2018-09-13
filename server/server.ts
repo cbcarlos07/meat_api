@@ -10,7 +10,6 @@ export class Server{
             useMongoClient: true
         })    
     }
-
     initRoutes(routers: Router[]): Promise<any>{
         return new Promise((resolve, reject)=>{
             try{
