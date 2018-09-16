@@ -3,6 +3,7 @@ exports.__esModule = true;
 var restify = require("restify");
 var environment_1 = require("../common/environment");
 var mongoose = require("mongoose");
+var merge_patch_parser_1 = require("./merge-patch.parser");
 var Server = /** @class */ (function () {
     function Server() {
     }
@@ -22,6 +23,7 @@ var Server = /** @class */ (function () {
                 });
                 _this.application.use(restify.plugins.queryParser());
                 _this.application.use(restify.plugins.bodyParser());
+                _this.application.use(merge_patch_parser_1.mergePatchBodyParser);
                 //routes    
                 for (var _i = 0, routers_1 = routers; _i < routers_1.length; _i++) {
                     var router = routers_1[_i];

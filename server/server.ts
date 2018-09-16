@@ -1,7 +1,8 @@
 import * as restify from 'restify'
 import {environment} from '../common/environment'
 import {Router} from '../common/router'
-import * as mongoose from 'mongoose';
+import * as mongoose from 'mongoose'
+import { mergePatchBodyParser } from './merge-patch.parser'
 export class Server{
     application: restify.Server
     initializeDb(): mongoose.MongooseThenable{
@@ -19,6 +20,7 @@ export class Server{
                 })    
                 this.application.use(restify.plugins.queryParser())
                 this.application.use(restify.plugins.bodyParser())
+                this.application.use(mergePatchBodyParser)
                 //routes    
                 for(let router of routers){
                     router.appyRoutes(this.application)

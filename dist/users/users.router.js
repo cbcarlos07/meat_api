@@ -62,6 +62,18 @@ var UsersRouter = /** @class */ (function (_super) {
                 return next();
             });
         });
+        application.patch('/users/:id', function (req, resp, next) {
+            var options = { "new": true };
+            users_model_1.User.findByIdAndUpdate(req.params.id, req.body, options)
+                .then(function (users) {
+                if (users) {
+                    resp.json(users);
+                    return next();
+                }
+                resp.send(404);
+                return next();
+            });
+        });
     };
     return UsersRouter;
 }(router_1.Router));
