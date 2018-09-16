@@ -1,25 +1,17 @@
 "use strict";
 exports.__esModule = true;
-var users = [
-    { id: "1", name: 'Peter Parker', email: 'peter#marvel.com' },
-    { id: "2", name: 'Bruce Wayne', email: 'bruce@dc.com' }
-];
-var User = /** @class */ (function () {
-    function User() {
+var mongoose = require("mongoose");
+var userSchema = new mongoose.Schema({
+    name: {
+        type: String
+    },
+    email: {
+        type: String,
+        unique: true
+    },
+    password: {
+        type: String,
+        select: false
     }
-    User.findAll = function () {
-        return Promise.resolve(users);
-    };
-    User.findById = function (id) {
-        return new Promise(function (resolve) {
-            var filtered = users.filter(function (user) { return user.id === id; });
-            var user = undefined;
-            if (filtered.length > 0) {
-                user = filtered[0];
-            }
-            resolve(user);
-        });
-    };
-    return User;
-}());
-exports.User = User;
+});
+exports.User = mongoose.model('User', userSchema);

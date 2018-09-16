@@ -21,6 +21,7 @@ var Server = /** @class */ (function () {
                     version: '1.0.0'
                 });
                 _this.application.use(restify.plugins.queryParser());
+                _this.application.use(restify.plugins.bodyParser());
                 //routes    
                 for (var _i = 0, routers_1 = routers; _i < routers_1.length; _i++) {
                     var router = routers_1[_i];
