@@ -45,6 +45,23 @@ var UsersRouter = /** @class */ (function (_super) {
                 return next();
             });
         });
+        application.put('/users/:id', function (req, resp, next) {
+            var options = { overwrite: true };
+            users_model_1.User.update({ _id: req.params.id }, req.body, options)
+                .exec()
+                .then(function (result) {
+                if (result.n) {
+                    return users_model_1.User.findById(req.params.id);
+                }
+                else {
+                    resp.json(404);
+                }
+            })
+                .then(function (users) {
+                resp.json(users);
+                return next();
+            });
+        });
     };
     return UsersRouter;
 }(router_1.Router));
