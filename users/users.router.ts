@@ -1,33 +1,27 @@
 import {Router} from '../common/router'
 import * as restify from 'restify'
 import {User} from './users.model'
-class UsersRouter extends Router{
-    appyRoutes(application: restify.Server){
+class UsersRouter extends Router {
+    constructor() {
+        super()
+        this.on('beforeRender', document => {
+            document.password = undefined;
+            //ou delete document.password
+        })
+    }
+    appyRoutes(application: restify.Server) {        
         application.get('/users', (req, resp, next) => {
-            User.find().then(users=>{
-                resp.json(users)
-                next()
-            })
+            User.find().then(this.render(resp, next))
         })
 
         application.get('/users/:id', (req, resp, next)=>{
-            User.findById(req.params.id).then(user => {
-                if(user){
-                    resp.json(user)
-                    return next()
-                }
-                resp.send(404)
-                next()
-            })
+            User.findById(req.params.id)
+                .then(this.render(resp, next))
         })
 
         application.post('/users', (req, resp, next)=>{
             let user = new User(req.body)
-            user.save().then(user => {
-                user.password = undefined //essa linha é usada para não ser mostrado de volta
-                resp.json(user)
-                return next()
-            }) 
+            user.save().then(this.render(resp, next)) 
         })
         application.put('/users/:id', (req, resp, next) => {
             const options = {overwrite: true}
@@ -48,12 +42,17 @@ class UsersRouter extends Router{
         application.patch('/users/:id', (req, resp, next) => {
             const options = {new: true}
             User.findByIdAndUpdate(req.params.id, req.body, options)
-                .then( users => {
-                    if(users){
-                        resp.json(users)
-                        return next()
+                .then( this.render(resp, next))
+        })
+        application.del('/users/:id', (req, resp, next) => {
+            User.remove({_id: req.params.id})
+                .exec()
+                .then( (cmdResult : any) => {
+                    if(cmdResult.result.n){
+                        resp.send(204)
+                    }else {
+                        resp.send(404)
                     }
-                    resp.send(404)
                     return next()
                 })
         })

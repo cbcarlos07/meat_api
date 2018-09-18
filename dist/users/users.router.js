@@ -1,11 +1,8 @@
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    }
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -18,32 +15,25 @@ var users_model_1 = require("./users.model");
 var UsersRouter = /** @class */ (function (_super) {
     __extends(UsersRouter, _super);
     function UsersRouter() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        _this.on('beforeRender', function (document) {
+            document.password = undefined;
+            //ou delete document.password
+        });
+        return _this;
     }
     UsersRouter.prototype.appyRoutes = function (application) {
+        var _this = this;
         application.get('/users', function (req, resp, next) {
-            users_model_1.User.find().then(function (users) {
-                resp.json(users);
-                next();
-            });
+            users_model_1.User.find().then(_this.render(resp, next));
         });
         application.get('/users/:id', function (req, resp, next) {
-            users_model_1.User.findById(req.params.id).then(function (user) {
-                if (user) {
-                    resp.json(user);
-                    return next();
-                }
-                resp.send(404);
-                next();
-            });
+            users_model_1.User.findById(req.params.id)
+                .then(_this.render(resp, next));
         });
         application.post('/users', function (req, resp, next) {
             var user = new users_model_1.User(req.body);
-            user.save().then(function (user) {
-                user.password = undefined; //essa linha é usada para não ser mostrado de volta
-                resp.json(user);
-                return next();
-            });
+            user.save().then(_this.render(resp, next));
         });
         application.put('/users/:id', function (req, resp, next) {
             var options = { overwrite: true };
@@ -65,12 +55,18 @@ var UsersRouter = /** @class */ (function (_super) {
         application.patch('/users/:id', function (req, resp, next) {
             var options = { "new": true };
             users_model_1.User.findByIdAndUpdate(req.params.id, req.body, options)
-                .then(function (users) {
-                if (users) {
-                    resp.json(users);
-                    return next();
+                .then(_this.render(resp, next));
+        });
+        application.del('/users/:id', function (req, resp, next) {
+            users_model_1.User.remove({ _id: req.params.id })
+                .exec()
+                .then(function (cmdResult) {
+                if (cmdResult.result.n) {
+                    resp.send(204);
                 }
-                resp.send(404);
+                else {
+                    resp.send(404);
+                }
                 return next();
             });
         });
