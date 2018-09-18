@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var router_1 = require("../common/router");
+var restify_errors_1 = require("restify-errors");
 var users_model_1 = require("./users.model");
 var UsersRouter = /** @class */ (function (_super) {
     __extends(UsersRouter, _super);
@@ -25,15 +26,17 @@ var UsersRouter = /** @class */ (function (_super) {
     UsersRouter.prototype.appyRoutes = function (application) {
         var _this = this;
         application.get('/users', function (req, resp, next) {
-            users_model_1.User.find().then(_this.render(resp, next));
+            users_model_1.User.find()
+                .then(_this.render(resp, next))["catch"](next);
         });
         application.get('/users/:id', function (req, resp, next) {
             users_model_1.User.findById(req.params.id)
-                .then(_this.render(resp, next));
+                .then(_this.render(resp, next))["catch"](next);
         });
         application.post('/users', function (req, resp, next) {
             var user = new users_model_1.User(req.body);
-            user.save().then(_this.render(resp, next));
+            user.save()
+                .then(_this.render(resp, next))["catch"](next);
         });
         application.put('/users/:id', function (req, resp, next) {
             var options = { overwrite: true };
@@ -44,18 +47,18 @@ var UsersRouter = /** @class */ (function (_super) {
                     return users_model_1.User.findById(req.params.id);
                 }
                 else {
-                    resp.json(404);
+                    throw new restify_errors_1.NotFoundError('Documento não encontrado');
                 }
             })
                 .then(function (users) {
                 resp.json(users);
                 return next();
-            });
+            })["catch"](next);
         });
         application.patch('/users/:id', function (req, resp, next) {
             var options = { "new": true };
             users_model_1.User.findByIdAndUpdate(req.params.id, req.body, options)
-                .then(_this.render(resp, next));
+                .then(_this.render(resp, next))["catch"](next);
         });
         application.del('/users/:id', function (req, resp, next) {
             users_model_1.User.remove({ _id: req.params.id })
@@ -65,10 +68,10 @@ var UsersRouter = /** @class */ (function (_super) {
                     resp.send(204);
                 }
                 else {
-                    resp.send(404);
+                    throw new restify_errors_1.NotFoundError('Documento não encontrado');
                 }
                 return next();
-            });
+            })["catch"](next);
         });
     };
     return UsersRouter;

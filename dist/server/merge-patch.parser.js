@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var restify_errors_1 = require("restify-errors");
 var mpContentType = 'application/merge-patch+json';
 exports.mergePatchBodyParser = function (req, resp, next) {
     if (req.getContentType() === mpContentType && req.method === 'PATCH') {
@@ -8,7 +9,7 @@ exports.mergePatchBodyParser = function (req, resp, next) {
             req.body = JSON.parse(req.body);
         }
         catch (e) {
-            return next(new Error("Invalid content: " + e.message));
+            return next(new restify_errors_1.BadRequestError("Invalid content: " + e.message));
         }
     }
     return next();
