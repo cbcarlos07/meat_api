@@ -2,6 +2,8 @@
 exports.__esModule = true;
 var mongoose = require("mongoose");
 var validators_1 = require("../common/validators");
+var bcrypt = require("bcrypt");
+var environment_1 = require("../common/environment");
 var userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -31,6 +33,19 @@ var userSchema = new mongoose.Schema({
             validator: validators_1.validateCPF,
             message: '{PATH} Invalid CPF ({VALUE})'
         }
+    }
+});
+userSchema.pre('save', function (next) {
+    var user = this;
+    if (!user.isModified('password')) {
+        next();
+    }
+    else {
+        bcrypt.hash(user.password, environment_1.environment.security.saltRounds)
+            .then(function (hash) {
+            user.password = hash;
+            next();
+        })["catch"](next);
     }
 });
 exports.User = mongoose.model('User', userSchema);
