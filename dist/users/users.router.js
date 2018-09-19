@@ -40,7 +40,7 @@ var UsersRouter = /** @class */ (function (_super) {
                 .then(_this.render(resp, next))["catch"](next);
         });
         application.put('/users/:id', function (req, resp, next) {
-            var options = { overwrite: true };
+            var options = { runValidators: true, overwrite: true };
             users_model_1.User.update({ _id: req.params.id }, req.body, options)
                 .exec()
                 .then(function (result) {
@@ -57,7 +57,7 @@ var UsersRouter = /** @class */ (function (_super) {
             })["catch"](next);
         });
         application.patch('/users/:id', function (req, resp, next) {
-            var options = { "new": true };
+            var options = { runValidators: true, "new": true };
             users_model_1.User.findByIdAndUpdate(req.params.id, req.body, options)
                 .then(_this.render(resp, next))["catch"](next);
         });
