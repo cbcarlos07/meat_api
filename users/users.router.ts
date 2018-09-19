@@ -10,7 +10,8 @@ class UsersRouter extends Router {
             //ou delete document.password
         })
     }
-    appyRoutes(application: restify.Server) {        
+    appyRoutes(application: restify.Server) {  
+      //  console.log('application', application)      
         application.get('/users', (req, resp, next) => {
             User.find()
                 .then(this.render(resp, next))

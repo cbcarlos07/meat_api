@@ -25,6 +25,7 @@ var UsersRouter = /** @class */ (function (_super) {
     }
     UsersRouter.prototype.appyRoutes = function (application) {
         var _this = this;
+        //  console.log('application', application)      
         application.get('/users', function (req, resp, next) {
             users_model_1.User.find()
                 .then(_this.render(resp, next))["catch"](next);
