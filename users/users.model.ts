@@ -56,6 +56,7 @@ const saveMiddleware = function(next){
 }
 const updateMiddleware = function(next){
     if( !this.getUpdate().password ){
+        next()
     }else{   
        hashPassword(this.getUpdate(), next)
     }

@@ -7,3 +7,10 @@ foi necessario o
     e
 
     npm i @types/restify-errors@4.3.2 -D -E
+
+bcrypt
+    
+    npm i bcrypt@1.0.3 -P -E
+
+    npm i @types/bcrypt@1.0.0 -D -E
+
