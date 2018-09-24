@@ -14,3 +14,11 @@ bcrypt
 
     npm i @types/bcrypt@1.0.0 -D -E
 
+Inicializar o mongo no linux/mac    
+
+Dentro da pasta da versão, na pasta bin digitar os comandos
+
+        ./mongod --dbpath=../../data/db
+
+Esse data/db é a pasta onde se localiza o banco de dados                 
+

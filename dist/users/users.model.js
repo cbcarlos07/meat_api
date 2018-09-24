@@ -53,6 +53,7 @@ var saveMiddleware = function (next) {
 };
 var updateMiddleware = function (next) {
     if (!this.getUpdate().password) {
+        next();
     }
     else {
         hashPassword(this.getUpdate(), next);
