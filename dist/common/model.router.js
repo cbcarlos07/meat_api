@@ -31,7 +31,7 @@ var ModelRouter = /** @class */ (function (_super) {
                 .then(_this.renderAll(resp, next))["catch"](next);
         };
         _this.findById = function (req, resp, next) {
-            _this.model.findById(req.params.id)
+            _this.prepareOne(_this.model.findById(req.params.id))
                 .then(_this.render(resp, next))["catch"](next);
         };
         _this.save = function (req, resp, next) {
@@ -76,6 +76,9 @@ var ModelRouter = /** @class */ (function (_super) {
         };
         return _this;
     }
+    ModelRouter.prototype.prepareOne = function (query) {
+        return query;
+    };
     return ModelRouter;
 }(router_1.Router));
 exports.ModelRouter = ModelRouter;
