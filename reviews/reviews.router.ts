@@ -1,7 +1,7 @@
 import { ModelRouter } from '../common/model.router';
 import * as restify from 'restify';
 import { Review } from './reviews.model';
-
+import * as mongoose from 'mongoose'
 class ReviewRouter extends ModelRouter<Review>{
     constructor(){
         super(Review)

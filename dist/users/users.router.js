@@ -16,6 +16,15 @@ var UsersRouter = /** @class */ (function (_super) {
     __extends(UsersRouter, _super);
     function UsersRouter() {
         var _this = _super.call(this, users_model_1.User) || this;
+        _this.findByEmail = function (req, resp, next) {
+            if (req.query.email) {
+                users_model_1.User.find({ email: req.query.email })
+                    .then(_this.renderAll(resp, next))["catch"](next);
+            }
+            else {
+                next();
+            }
+        };
         _this.on('beforeRender', function (document) {
             document.password = undefined;
             //ou delete document.password
@@ -24,7 +33,8 @@ var UsersRouter = /** @class */ (function (_super) {
     }
     UsersRouter.prototype.appyRoutes = function (application) {
         //  console.log('application', application)      
-        application.get('/users', this.findAll);
+        application.get({ path: '/users', version: '2.0.0' }, [this.findByEmail, this.findAll]);
+        application.get({ path: '/users', version: '1.0.0' }, this.findAll);
         application.get('/users/:id', [this.validateId, this.findById]);
         application.post('/users', this.save);
         application.put('/users/:id', [this.validateId, this.replace]);
