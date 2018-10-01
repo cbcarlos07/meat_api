@@ -20,6 +20,10 @@ var Router = /** @class */ (function (_super) {
     Router.prototype.envelope = function (document) {
         return document;
     };
+    Router.prototype.envelopAll = function (documents, options) {
+        if (options === void 0) { options = {}; }
+        return documents;
+    };
     Router.prototype.render = function (response, next) {
         var _this = this;
         return function (document) {
@@ -33,18 +37,19 @@ var Router = /** @class */ (function (_super) {
             return next();
         };
     };
-    Router.prototype.renderAll = function (response, next) {
+    Router.prototype.renderAll = function (response, next, options) {
         var _this = this;
+        if (options === void 0) { options = {}; }
         return function (documents) {
             if (documents) {
                 documents.forEach(function (document, index, array) {
                     _this.emit('beforeRender', document);
                     array[index] = _this.envelope(document);
                 });
-                response.json(documents);
+                response.json(_this.envelopAll(documents, options));
             }
             else {
-                response.json([]);
+                response.json(_this.envelopAll([]));
             }
             return next();
         };
