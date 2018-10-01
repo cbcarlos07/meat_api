@@ -17,6 +17,12 @@ var ReviewRouter = /** @class */ (function (_super) {
     function ReviewRouter() {
         return _super.call(this, reviews_model_1.Review) || this;
     }
+    ReviewRouter.prototype.envelope = function (document) {
+        var resource = _super.prototype.envelope.call(this, document);
+        var restId = document.restaurant._id ? document.restaurant._id : document.restaurant;
+        resource._links.restaurant = "/restaurants/" + restId;
+        return resource;
+    };
     ReviewRouter.prototype.prepareOne = function (query) {
         return query.populate('user', 'name')
             .populate('restaurant', 'name');
@@ -30,9 +36,9 @@ var ReviewRouter = /** @class */ (function (_super) {
       }
       */
     ReviewRouter.prototype.appyRoutes = function (application) {
-        application.get('/reviews', this.findAll);
-        application.get('/reviews/:id', [this.validateId, this.findById]);
-        application.post('/reviews', this.save);
+        application.get("" + this.basePath, this.findAll);
+        application.get(this.basePath + "/:id", [this.validateId, this.findById]);
+        application.post("" + this.basePath, this.save);
     };
     return ReviewRouter;
 }(model_router_1.ModelRouter));

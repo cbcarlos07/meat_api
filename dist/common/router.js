@@ -17,12 +17,15 @@ var Router = /** @class */ (function (_super) {
     function Router() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Router.prototype.envelope = function (document) {
+        return document;
+    };
     Router.prototype.render = function (response, next) {
         var _this = this;
         return function (document) {
             if (document) {
                 _this.emit('beforeRender', document);
-                response.json(document);
+                response.json(_this.envelope(document));
             }
             else {
                 throw new restify_errors_1.NotFoundError('Documento não encontrado');
@@ -34,14 +37,16 @@ var Router = /** @class */ (function (_super) {
         var _this = this;
         return function (documents) {
             if (documents) {
-                documents.forEach(function (document) {
+                documents.forEach(function (document, index, array) {
                     _this.emit('beforeRender', document);
+                    array[index] = _this.envelope(document);
                 });
                 response.json(documents);
             }
             else {
                 response.json([]);
             }
+            return next();
         };
     };
     return Router;

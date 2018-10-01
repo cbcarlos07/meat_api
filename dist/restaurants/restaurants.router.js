@@ -46,15 +46,20 @@ var RestaurantsRouter = /** @class */ (function (_super) {
         };
         return _this;
     }
+    RestaurantsRouter.prototype.envelope = function (document) {
+        var resource = _super.prototype.envelope.call(this, document);
+        resource._links.menu = this.basePath + "/" + resource._id + "/menu";
+        return resource;
+    };
     RestaurantsRouter.prototype.appyRoutes = function (app) {
-        app.get('/restaurants', this.findAll);
-        app.get('/restaurants/:id', [this.validateId, this.findById]);
-        app.post('/restaurants', this.save);
-        app.put('/restaurants/:id', [this.validateId, this.replace]);
-        app.patch('/restaurants/:id', [this.validateId, this.update]);
-        app.del('/restaurants/:id', [this.validateId, this["delete"]]);
-        app.get('/restaurants/:id/menu', [this.validateId, this.findMenu]);
-        app.put('/restaurants/:id/menu', [this.validateId, this.replaceMenu]);
+        app.get("" + this.basePath, this.findAll);
+        app.get(this.basePath + "/:id", [this.validateId, this.findById]);
+        app.post("" + this.basePath, this.save);
+        app.put(this.basePath + "/:id", [this.validateId, this.replace]);
+        app.patch(this.basePath + "/:id", [this.validateId, this.update]);
+        app.del(this.basePath + "/:id", [this.validateId, this["delete"]]);
+        app.get(this.basePath + "/:id/menu", [this.validateId, this.findMenu]);
+        app.put(this.basePath + "/:id/menu", [this.validateId, this.replaceMenu]);
     };
     return RestaurantsRouter;
 }(model_router_1.ModelRouter));

@@ -74,10 +74,16 @@ var ModelRouter = /** @class */ (function (_super) {
                 return next();
             })["catch"](next);
         };
+        _this.basePath = "/" + model.collection.name;
         return _this;
     }
     ModelRouter.prototype.prepareOne = function (query) {
         return query;
+    };
+    ModelRouter.prototype.envelope = function (document) {
+        var resource = Object.assign({ _links: {} }, document.toJSON());
+        resource._links.self = this.basePath + "/" + resource._id;
+        return resource;
     };
     return ModelRouter;
 }(router_1.Router));
