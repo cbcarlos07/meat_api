@@ -19,6 +19,7 @@ exports.handleError = function (req, resp, err, done) {
                 messages_1.push({ message: err.errors[name_1].message });
             }
             err.toJSON = function () { return ({
+                message: 'Valition error while processing your request',
                 errors: messages_1
             }); };
             break;

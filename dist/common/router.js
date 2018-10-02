@@ -34,7 +34,7 @@ var Router = /** @class */ (function (_super) {
             else {
                 throw new restify_errors_1.NotFoundError('Documento não encontrado');
             }
-            return next();
+            return next(false);
         };
     };
     Router.prototype.renderAll = function (response, next, options) {
@@ -51,7 +51,7 @@ var Router = /** @class */ (function (_super) {
             else {
                 response.json(_this.envelopAll([]));
             }
-            return next();
+            return next(false);
         };
     };
     return Router;

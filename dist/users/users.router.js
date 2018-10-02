@@ -19,15 +19,11 @@ var UsersRouter = /** @class */ (function (_super) {
         _this.findByEmail = function (req, resp, next) {
             if (req.query.email) {
                 users_model_1.User.findByEmail(req.query.email)
-                    .then(function (user) {
-                    if (user) {
-                        return [user];
-                    }
-                    else {
-                        return [];
-                    }
-                })
-                    .then(_this.renderAll(resp, next))["catch"](next);
+                    .then(function (user) { return user ? [user] : []; })
+                    .then(_this.renderAll(resp, next, {
+                    pageSize: _this.pageSize,
+                    url: req.url
+                }))["catch"](next);
             }
             else {
                 next();
