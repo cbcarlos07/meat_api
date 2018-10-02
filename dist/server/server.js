@@ -47,6 +47,10 @@ var Server = /** @class */ (function () {
             return _this.initRoutes(routers).then(function () { return _this; });
         });
     };
+    Server.prototype.shutdown = function () {
+        var _this = this;
+        return mongoose.disconnect().then(function () { return _this.application.close(); });
+    };
     return Server;
 }());
 exports.Server = Server;
