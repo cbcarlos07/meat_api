@@ -1,6 +1,6 @@
 import {ModelRouter} from '../common/model.router'
 import * as restify from 'restify'
-
+import {authenticate} from '../security/auth.handler'
 import {User} from './users.model'
 class UsersRouter extends ModelRouter<User> {
     constructor() {
@@ -32,6 +32,7 @@ class UsersRouter extends ModelRouter<User> {
         application.put(`${this.basePath}/:id`, [this.validateId, this.replace] )
         application.patch(`${this.basePath}/:id`, [this.validateId, this.update])
         application.del(`${this.basePath}/:id`, [this.validateId, this.delete])
+        application.post(`${this.basePath}/authenticate`, authenticate)
     }
 }
 

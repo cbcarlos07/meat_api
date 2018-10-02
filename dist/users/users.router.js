@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var model_router_1 = require("../common/model.router");
+var auth_handler_1 = require("../security/auth.handler");
 var users_model_1 = require("./users.model");
 var UsersRouter = /** @class */ (function (_super) {
     __extends(UsersRouter, _super);
@@ -44,6 +45,7 @@ var UsersRouter = /** @class */ (function (_super) {
         application.put(this.basePath + "/:id", [this.validateId, this.replace]);
         application.patch(this.basePath + "/:id", [this.validateId, this.update]);
         application.del(this.basePath + "/:id", [this.validateId, this["delete"]]);
+        application.post(this.basePath + "/authenticate", auth_handler_1.authenticate);
     };
     return UsersRouter;
 }(model_router_1.ModelRouter));

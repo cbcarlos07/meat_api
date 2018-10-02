@@ -42,3 +42,11 @@ Adicionado no package.json
         "globals": {
         "address": "http://localhost:3001"
         },`
+
+JSON WEB TOKEN
+
+        npm i jsonwebtoken@8.1.1 -P -E
+
+Definições de tipo
+
+        npm i @types/jsonwebtoken@7.2.5 -D -E        
