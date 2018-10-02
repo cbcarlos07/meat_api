@@ -25,3 +25,20 @@ Esse data/db é a pasta onde se localiza o banco de dados
 Instalação do test
         
             npm i jest@22.4.2 ts-jest@22.0.4 typescript@2.6.2 supertest@3.0.0 @types/jest@22.1.2 @types/supertest@2.0.4 -D -E
+
+Mais pacotes que precisaram ser instalados
+
+            npm i ts-node@5.0.1 jest-cli@22.4.2 -D -E
+
+Configuração no package.json            
+
+       ` "scripts": {
+            "test": "ts-node jest.startup.ts"
+        },`
+
+Adicionado no package.json
+
+    ` "jest": {
+        "globals": {
+        "address": "http://localhost:3001"
+        },`
