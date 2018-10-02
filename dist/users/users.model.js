@@ -35,8 +35,11 @@ var userSchema = new mongoose.Schema({
         }
     }
 });
-userSchema.statics.findByEmail = function (email) {
-    return this.findOne({ email: email });
+userSchema.statics.findByEmail = function (email, projection) {
+    return this.findOne({ email: email }, projection);
+};
+userSchema.methods.matches = function (password) {
+    return bcrypt.compareSync(password, this.password);
 };
 var hashPassword = function (obj, next) {
     bcrypt.hash(obj.password, environment_1.environment.security.saltRounds)
