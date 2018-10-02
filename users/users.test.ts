@@ -4,6 +4,7 @@ import {Server} from '../server/server'
 import {environment} from '../common/environment';
 import {usersRouter} from '../users/users.router'
 import {User} from './users.model'
+import { response } from 'spdy';
 let address: string
 let server: Server
 beforeAll(()=>{
@@ -41,6 +42,38 @@ test('post /users', () => {
                 expect(response.body.cpf).toBe('565.825.557-07')
                 expect(response.body.password).toBeUndefined()
              }).catch(fail)
+})
+// test.only // para executar somente o ele
+// test.skip para pular o test
+test('get /users/aaaaa - not found', () => {
+    return request(address)
+            .get('/users/aaaaa')
+            .then(response => {
+                expect(response.status).toBe(404)
+            }).catch(fail)
+})
+
+test('patch /users/:id', () => {
+    return request(address)
+            .post('/users')
+            .send({
+                name: 'usuario2',
+                email: 'usuario2@email.com',
+                password: '123456'
+            })
+            .then(response => request(address)
+                                     .patch(`/users/${response.body._id}`)
+                                     .send({
+                                         name: 'usuario2 - patch'
+                                     }))
+            .then(response => { 
+                expect(response.status).toBe(200)
+                expect(response.body._id).toBeDefined()
+                expect(response.body.name).toBe('usuario2 - patch')
+                expect(response.body.email).toBe('usuario2@email.com')
+                expect(response.body.password).toBeUndefined()
+            })                         
+            .catch(fail)
 })
 
 
