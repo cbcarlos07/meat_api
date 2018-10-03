@@ -20,12 +20,15 @@ var Server = /** @class */ (function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
             try {
-                _this.application = restify.createServer({
+                var options = {
                     name: 'meat-api',
-                    version: '1.0.0',
-                    certificate: fs.readFileSync('./security/keys/cert.pem'),
-                    key: fs.readFileSync('./security/keys/key.pem')
-                });
+                    version: '1.0.0'
+                };
+                if (environment_1.environment.security.enableHTTPS) {
+                    options.certificate = fs.readFileSync(environment_1.environment.security.certificate),
+                        options.key = fs.readFileSync(environment_1.environment.security.key);
+                }
+                _this.application = restify.createServer(options);
                 _this.application.use(restify.plugins.queryParser());
                 _this.application.use(restify.plugins.bodyParser());
                 _this.application.use(merge_patch_parser_1.mergePatchBodyParser);

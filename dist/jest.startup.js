@@ -16,6 +16,14 @@ var beforeAllTests = function () {
         users_router_1.usersRouter,
         reviews_router_1.reviewRouter
     ]).then(function () { return users_model_1.User.remove({}).exec(); })
+        .then(function () {
+        var admin = new users_model_1.User();
+        admin.name = 'admin';
+        admin.email = 'admin@email.com';
+        admin.password = '123456';
+        admin.profiles = ['admin', 'user'];
+        return admin.save();
+    })
         .then(function () { return reviews_model_1.Review.remove({}).exec(); });
 };
 var afterAllTests = function () {
