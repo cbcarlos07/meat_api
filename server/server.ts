@@ -1,3 +1,4 @@
+import * as fs from 'fs'
 import * as restify from 'restify'
 import {environment} from '../common/environment'
 import {Router} from '../common/router'
@@ -18,7 +19,9 @@ export class Server{
             try{
                 this.application = restify.createServer({
                     name: 'meat-api',
-                    version: '1.0.0'
+                    version: '1.0.0',
+                    certificate: fs.readFileSync('./security/keys/cert.pem'),
+                    key: fs.readFileSync('./security/keys/key.pem')
                 })    
                 this.application.use(restify.plugins.queryParser())
                 this.application.use(restify.plugins.bodyParser())

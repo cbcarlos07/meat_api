@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var fs = require("fs");
 var restify = require("restify");
 var environment_1 = require("../common/environment");
 var mongoose = require("mongoose");
@@ -21,7 +22,9 @@ var Server = /** @class */ (function () {
             try {
                 _this.application = restify.createServer({
                     name: 'meat-api',
-                    version: '1.0.0'
+                    version: '1.0.0',
+                    certificate: fs.readFileSync('./security/keys/cert.pem'),
+                    key: fs.readFileSync('./security/keys/key.pem')
                 });
                 _this.application.use(restify.plugins.queryParser());
                 _this.application.use(restify.plugins.bodyParser());
