@@ -33,6 +33,10 @@ var userSchema = new mongoose.Schema({
             validator: validators_1.validateCPF,
             message: '{PATH} Invalid CPF ({VALUE})'
         }
+    },
+    profiles: {
+        type: [String],
+        required: false
     }
 });
 userSchema.statics.findByEmail = function (email, projection) {
@@ -40,6 +44,14 @@ userSchema.statics.findByEmail = function (email, projection) {
 };
 userSchema.methods.matches = function (password) {
     return bcrypt.compareSync(password, this.password);
+};
+userSchema.methods.hasAny = function () {
+    var _this = this;
+    var profiles = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        profiles[_i] = arguments[_i];
+    }
+    return profiles.some(function (profile) { return _this.profiles.indexOf(profile) !== -1; });
 };
 var hashPassword = function (obj, next) {
     bcrypt.hash(obj.password, environment_1.environment.security.saltRounds)

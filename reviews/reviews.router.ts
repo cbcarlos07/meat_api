@@ -2,6 +2,7 @@ import { ModelRouter } from '../common/model.router';
 import * as restify from 'restify';
 import { Review } from './reviews.model';
 import * as mongoose from 'mongoose'
+import {authorize} from '../security/authz.handler'
 class ReviewRouter extends ModelRouter<Review>{
     constructor(){
         super(Review)
@@ -28,7 +29,7 @@ class ReviewRouter extends ModelRouter<Review>{
     appyRoutes(application: restify.Server){
         application.get(`${this.basePath}`, this.findAll)
         application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
-        application.post(`${this.basePath}`, this.save)
+        application.post(`${this.basePath}`, [authorize('user'),this.save])
     }
 }
 export const reviewRouter = new ReviewRouter()

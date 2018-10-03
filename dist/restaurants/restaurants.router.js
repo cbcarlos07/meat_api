@@ -13,6 +13,7 @@ exports.__esModule = true;
 var model_router_1 = require("../common/model.router");
 var restify_errors_1 = require("restify-errors");
 var restaurants_model_1 = require("./restaurants.model");
+var authz_handler_1 = require("../security/authz.handler");
 var RestaurantsRouter = /** @class */ (function (_super) {
     __extends(RestaurantsRouter, _super);
     function RestaurantsRouter() {
@@ -54,10 +55,10 @@ var RestaurantsRouter = /** @class */ (function (_super) {
     RestaurantsRouter.prototype.appyRoutes = function (app) {
         app.get("" + this.basePath, this.findAll);
         app.get(this.basePath + "/:id", [this.validateId, this.findById]);
-        app.post("" + this.basePath, this.save);
-        app.put(this.basePath + "/:id", [this.validateId, this.replace]);
-        app.patch(this.basePath + "/:id", [this.validateId, this.update]);
-        app.del(this.basePath + "/:id", [this.validateId, this["delete"]]);
+        app.post("" + this.basePath, [authz_handler_1.authorize('admin'), this.save]);
+        app.put(this.basePath + "/:id", [authz_handler_1.authorize('admin'), this.validateId, this.replace]);
+        app.patch(this.basePath + "/:id", [authz_handler_1.authorize('admin'), this.validateId, this.update]);
+        app.del(this.basePath + "/:id", [authz_handler_1.authorize('admin'), this.validateId, this["delete"]]);
         app.get(this.basePath + "/:id/menu", [this.validateId, this.findMenu]);
         app.put(this.basePath + "/:id/menu", [this.validateId, this.replaceMenu]);
     };

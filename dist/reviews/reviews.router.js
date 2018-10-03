@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var model_router_1 = require("../common/model.router");
 var reviews_model_1 = require("./reviews.model");
+var authz_handler_1 = require("../security/authz.handler");
 var ReviewRouter = /** @class */ (function (_super) {
     __extends(ReviewRouter, _super);
     function ReviewRouter() {
@@ -38,7 +39,7 @@ var ReviewRouter = /** @class */ (function (_super) {
     ReviewRouter.prototype.appyRoutes = function (application) {
         application.get("" + this.basePath, this.findAll);
         application.get(this.basePath + "/:id", [this.validateId, this.findById]);
-        application.post("" + this.basePath, this.save);
+        application.post("" + this.basePath, [authz_handler_1.authorize('user'), this.save]);
     };
     return ReviewRouter;
 }(model_router_1.ModelRouter));
