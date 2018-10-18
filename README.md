@@ -49,4 +49,5 @@ JSON WEB TOKEN
 
 Definições de tipo
 
-        npm i @types/jsonwebtoken@7.2.5 -D -E        
+        npm i @types/jsonwebtoken@7.2.5 -D -E      
+
