@@ -32,4 +32,8 @@ const afterAllTests = () => {
 beforeAllTests()
 .then(()=>jestCli.run()) // jestCli.run() procura pelos tests 'manualmente'
 .then(()=> afterAllTests())
-.catch(console.error)
+.catch(error => {
+    console.error(error)
+    process.exit(1)
+})
+
